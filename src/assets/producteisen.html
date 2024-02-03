@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Producteisen.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="producteisen">Producteisen</h1>
+<p>De volgende doelstellingen kunnen geformuleerd worden voor de website:</p>
+<ol>
+<li>Belangstelling genereren voor de kegelsport in Winterswijk</li>
+<li>Informatie verstrekken aan leden van kegelclubs aangesloten bij de WKB</li>
+<li>Informatie-uitwisseling tussen kegelclubs en WKB.</li>
+</ol>
+<h2 id="1-belangstelling-genereren-voor-de-kegelsport-in-winterswijk">1. Belangstelling genereren voor de kegelsport in Winterswijk</h2>
+<h3 id="11-doel">1.1. Doel</h3>
+<p>Doel van het genereren van belangstelling is dat mensen gaan overwegen om zelf te gaan kegelen, ofwel 'conversie'. De functie die de website hierin kan hebben is</p>
+<ol>
+<li>informeren</li>
+<li>koppelen aan kegelaars</li>
+<li>koppelen aan kegelactiviteiten.</li>
+</ol>
+<p>ad 1. Informeren</p>
+<p>Om belangstelling te genereren voor de kegelsport in Winterswijk kan er informatie gegeven worden over</p>
+<ol>
+<li>de clubs die aangesloten zijn bij de WKB</li>
+<li>leden van de clubs die het visitekaartje zijn van de kegelsport in Winterswijk</li>
+<li>de kegelsport in het algemeen</li>
+<li>wat er komt kijken bij kegelen in Winterswijk (kosten, verplichtingen)</li>
+<li>waar er in Winterswijk gekegeld wordt door clubs die aangesloten zijn bij de WKB</li>
+</ol>
+<p>ad 2. Koppelen aan kegelaars</p>
+<p>Een reden om te willen gaan kegelen kan zijn dat iemand positieve associaties heeft met mensen die kegelen in Winterswijk en contact met die mensen zou willen hebben en onderhouden. De website zou erin kunnen voorzien dat mensen makkelijk in contact kunnen komen met kegelaars in Winterswijk.</p>
+<p>ad 3 Koppelen aan kegelactiviteiten</p>
+<p>Een andere reden om te willen gaan kegelen kan zijn dat iemand positieve associaties heeft met het kegelen zelf en daarom zelf zou willen gaan kegelen. De website zou mogelijkheden kunnen bieden om mensen te laten kegelen, om het kegelen zelf te kunnen ervaren.</p>
+<h3 id="12-functionaliteit">1.2. Functionaliteit</h3>
+<p>Zaken die van belang zijn om belangstelling te genereren met behulp van de site :</p>
+<ul>
+<li>Aansprekende beelden (foto's van kegelen en van kegelaars, afbeeldingen)</li>
+<li>Mooie vormgeving (pagina-indeling, kleurgebruik, achtergrondafbeeldingen)</li>
+<li>Aansprekende, korte 'verhalen' over mensen die kegelen</li>
+<li>Toegankelijkheid van de informatie (makkelijk te vinden, makkelijk te begrijpen, intuïtieve navigatie)</li>
+<li>Prettige leeservaring (geen wachttijd bij navigatie, door kunnen lezen en navigeren bij netwerkstoring)</li>
+<li>Vormgeving en functionaliteit passend bij de mogelijkheden van device (telefoon, pc/laptop, tablet)</li>
+<li>Mobile-first (vooronderstelling dat de site meestal en bij voorkeur op een telefoon bekeken wordt)</li>
+</ul>
+<h3 id="13-componenten">1.3. Componenten</h3>
+<p>Informatiepagina's:</p>
+<ul>
+<li>Home pagina</li>
+<li>Pagina 'Toppers in beeld'</li>
+<li>Pagina 'Clubs in beeld'</li>
+<li>Pagina 'Uitleg kegelsport'</li>
+<li>Pagina 'Kosten'</li>
+<li>Pagina 'Locaties'</li>
+</ul>
+<p>Informatieformulier 'Lid worden'</p>
+<h2 id="2-informatie-verstrekken-aan-leden-van-kegelclubs-aangesloten-bij-de-wkb">2. Informatie verstrekken aan leden van kegelclubs aangesloten bij de WKB</h2>
+<h3 id="21-doel">2.1. Doel</h3>
+<p>Voor de leden van de bij de WKB aangesloten kegelclubs is het doel van de website:</p>
+<ol>
+<li>Opvragen van informatie over het competitieverloop (uitslagen) tijdens WKB competitie</li>
+<li>Opvragen van informatie over het competitieverloop (uitslagen) tijdens Meesterschappen</li>
+<li>Praktische informatie opvragen over lopende of geplande competitie (competitiedata, locatie, banen, tijden)</li>
+<li>Informeren over geplande wedstrijden waar door leden van bij de WKB aangesloten kegelclubs aan deelgenomen wordt (Nationale kampioenschappen, Regionale Kampioenschappen, Toernooien)</li>
+<li>Informeren over resultaten van toernooien waar door leden van bij de WKB aangesloten kegelclubs aan deelgenomen werd (Nationale kampioenschappen, Regionale Kampioenschappen, Toernooien)</li>
+</ol>
+<h3 id="22-functionaliteit">2.2. Functionaliteit</h3>
+<p>Zaken die van belang zijn om deze doelstellingen te realiseren:</p>
+<ul>
+<li>Eenvoudige, functionele vormgeving (pagina-indeling, kleurgebruik)</li>
+<li>Toegankelijkheid van de informatie (makkelijk te vinden, makkelijk te begrijpen, intuïtieve navigatie)</li>
+<li>Prettige leeservaring (geen wachttijd bij navigatie, door kunnen lezen en navigeren bij netwerkstoring)</li>
+<li>Actuele informatie (automatisch pushen van nieuwe informatie nadat site geladen is)</li>
+<li>Vormgeving en functionaliteit passend bij de mogelijkheden van device (telefoon, pc/laptop, tablet)</li>
+<li>Mobile-first</li>
+</ul>
+<h3 id="23-componenten">2.3. Componenten</h3>
+<ul>
+<li>
+<p>Inloggen door WKB-kegelaar</p>
+</li>
+<li>
+<p>Pagina 'WKB competitie'</p>
+</li>
+<li>
+<p>Pagina 'Meesterschappen'</p>
+</li>
+<li>
+<p>Pagina 'Wedstrijden'</p>
+</li>
+<li>
+<p>Pagina 'Competitiedata'</p>
+</li>
+<li>
+<p>Pagina 'Instellingen'</p>
+</li>
+<li>
+<p>Pagina 'Uitslagen download'</p>
+</li>
+<li>
+<p>Pagina 'Profiel'</p>
+</li>
+</ul>
+<h2 id="3-informatie-uitwisseling-tussen-kegelclubs-en-wkb">3. Informatie-uitwisseling tussen kegelclubs en WKB</h2>
+<p>Er zou een derde algemeen doel toegevoegd kunnen worden, te weten 'Informatie-uitwisseling tussen kegelclubs en WKB'.</p>
+<p>Hier worden enkele mogelijke doelen genoemd die daaronder zouden kunnen vallen.</p>
+<h3 id="31-doel">3.1. Doel</h3>
+<ol>
+<li>Inzien en ontvangen van verslagen van WKB-overleg</li>
+<li>Aangeven van competitievoorkeuren (competitie-avond, tijdvak)</li>
+<li>Doorgeven van mutaties (opgave deelnemers competitie, doorgeven absenties)</li>
+</ol>
+<p>Er zou ook nog onderscheid gemaakt kunnen worden tussen</p>
+<ul>
+<li>zaken die een competitie betreffen (communicatie met de wedstrijdcommissie),</li>
+<li>publieke communicatie (communicatie met PR-functionaris),</li>
+<li>regionale en nationale toernooien (communicatie met wedstrijdsecretariaat) en</li>
+<li>bestuurlijke aangelegenheden (communicatie met WKB-bestuur).</li>
+</ul>
+<p>Meer mogelijke functies:</p>
+<ol start="4">
+<li>Doorgeven van nieuws voor in de pers</li>
+<li>Doorgeven van nieuws voor op de website</li>
+<li>Doorgeven van informatie of verzoek ter bespreking en besluitvorming in bestuur</li>
+<li>Inzien en ontvangen van informatie over geplande toernooien</li>
+<li>Opvragen van informatie over een onderwerp uit het WKB-archief</li>
+<li>Inzien en ontvangen van verstuurde persberichten</li>
+<li>Inzien en ontvangen van gepubliceerde berichten (krantenartikelen, tv-uitzendingen, berichten op nieuwssites)</li>
+</ol>
+<h3 id="32-functionaliteit">3.2. Functionaliteit</h3>
+<p>Zaken die van belang zijn om deze doelstellingen te realiseren:</p>
+<ul>
+<li>Eenvoudige, functionele vormgeving (pagina-indeling, kleurgebruik)</li>
+<li>Prettige leeservaring (geen wachttijd bij navigatie, door kunnen lezen en navigeren bij netwerkstoring)</li>
+<li>Vormgeving en functionaliteit passend bij de mogelijkheden van device (telefoon, pc/laptop, tablet)</li>
+<li>Mobile first?</li>
+</ul>
+<h3 id="33-componenten">3.3. Componenten</h3>
+<p>Nog te bepalen welke functionaliteit gerealiseerd wordt en hoe die ondergebracht wordt in een of meerdere pagina's.</p>
+<h2 id="4-wkb-beheer">4. WKB beheer</h2>
+<p>De WKB moet de informatie op de publieke-, leden- en clubapp kunnen updaten.</p>
+<p>Hier worden enkele mogelijke doelen genoemd die daaronder zouden kunnen vallen.</p>
+<h3 id="41-doel">4.1. Doel</h3>
+<p>Publieke app:</p>
+<ol>
+<li>Home pagina updaten</li>
+<li>Pagina 'Toppers' updaten</li>
+<li>Pagina 'Clubs' updaten</li>
+<li>Pagina 'Kegelsport' updaten</li>
+<li>Pagina 'Kosten' updaten</li>
+<li>Pagina 'Locaties' updaten</li>
+</ol>
+<p>Ledenapp:</p>
+<ol>
+<li>Pagina 'WKB competitie' updaten</li>
+<li>Pagina 'Meesterschappen' updaten</li>
+<li>Pagina 'Competitiedata' updaten</li>
+<li>Pagina 'Meesterschappen'data' updaten</li>
+<li>Pagina 'Download competitie uitslagen' updaten</li>
+<li>Pagina 'Download meesterschappen uitslagen' updaten</li>
+<li>Pagina 'Instellingen competitie' updaten</li>
+<li>Pagina 'Instellingen meesterschappen' updaten</li>
+<li>Pagina 'Profiel' updaten</li>
+</ol>
+<p>De hierboven genoemde doelen zijn ondergebracht in onderstaande opsomming van doelen van de clubapp.</p>
+<p>Clubapp:</p>
+<p>Bestuur</p>
+<ol>
+<li>Verslag van WKB-overleg toevoegen</li>
+<li>Genomen besluit toevoegen</li>
+<li>Binnengekomen informatie of verzoek toevoegen</li>
+<li>Document toevoegen aan archief</li>
+<li>Ledeninformatie bekijken of updaten
+<ul>
+<li>NAW, e-mail, licentie, club, competitiegooier</li>
+<li>profielafbeelding</li>
+<li>gemaild worden door geïnteresseerde akkoord</li>
+<li>club-rol</li>
+<li>wkb-rol</li>
+<li>contactpersoon-rol</li>
+<li>topper (tekst, foto)</li>
+<li>app statistieken (aantal keer ingelogd)</li>
+<li>account verwijderen</li>
+<li>batch upload alle leden</li>
+</ul>
+</li>
+<li>Clubadministratie
+<ul>
+<li>bestuursleden</li>
+<li>contactgegevens</li>
+<li>oprichtingsdatum</li>
+<li>clubfoto</li>
+<li>topclub (is topclub, tekst, foto)</li>
+<li>site-vermelding basis (tekst, foto, e-mailadres)</li>
+<li>instemming website (tekst op site zetten, proefgooien, bellen, mailen met geïnteresseerde, mailen door geïnteresseerde)</li>
+<li>batch upload alle clubs</li>
+</ul>
+</li>
+<li>Website updaten (hoofdtekst, subtekst)
+<ul>
+<li>pagina's: Locaties, Kegelsport, Kosten, Organisatie</li>
+</ul>
+</li>
+</ol>
+<p>Wedstrijdcommissie</p>
+<ol start="8">
+<li>Competitiedata (locatie, tijd, banen) toevoegen (WKB competitie, Meesterschappen)
+<ul>
+<li>per club</li>
+<li>batch upload alle data</li>
+</ul>
+</li>
+<li>Competitiedata bekijken
+<ul>
+<li>WKB Competitie: per ronde</li>
+<li>Meesterschappen: voorronde en finales</li>
+</ul>
+</li>
+<li>Deelnemers competitie toevoegen (club, kegelaar, klasse) en bekijken</li>
+<li>Competitie uitslagen toevoegen (WKB competitie, Meesterschappen)</li>
+<ul>
+<li>upload persoonlijke uitslagen per klasse</li>
+<li>upload team uitslagen per klasse</li>
+<li>batch upload persoonlijk en team meerdere klasses</li>
+</ul>
+<li>Competitie uitslagen bekijken (WKB competitie, Meesterschappen)</li>
+<ul>
+<li>per klasse</li>
+</ul>
+</ol>
+<p>PR-functionaris</p>
+<ol start="13">
+<li>Verzonden persbericht toevoegen</li>
+<li>Perspublicatie toevoegen (krantenartikelen, tv-uitzendingen, berichten op nieuwssites)</li>
+<li>Binnengekomen nieuws toevoegen</li>
+</ol>
+<p>Wedstrijdsecretariaat</p>
+<ol start="16">
+<li>Informatie over geplande toernooien toevoegen</li>
+<li>Wedstrijdresultaten toevoegen</li>
+</ol>
+<h3 id="42-functionaliteit">4.2. Functionaliteit</h3>
+<p>Zaken die van belang zijn om deze doelstellingen te realiseren:</p>
+<ul>
+<li>Eenvoudige, functionele vormgeving (pagina-indeling, kleurgebruik)</li>
+<li>Prettige leeservaring (geen wachttijd bij navigatie, door kunnen lezen en navigeren bij netwerkstoring)</li>
+<li>Vormgeving en functionaliteit passend bij de mogelijkheden van device (telefoon, pc/laptop, tablet)</li>
+<li>Desktop first?</li>
+</ul>
+<h3 id="43-componenten">4.3. Componenten</h3>
+<ul>
+<li>
+<p>Inloggen door WKB-bestuurder</p>
+</li>
+<li>
+<p>Pagina 'Uitslagen' (11, 12)</p>
+</li>
+<li>
+<p>Pagina 'Data' (8, 9)</p>
+</li>
+<li>
+<p>Pagina 'Deelnemers' (10)</p>
+</li>
+<li>
+<p>Pagina 'Leden' (5)</p>
+</li>
+<li>
+<p>Pagina 'Clubs' (6)</p>
+</li>
+<li>
+<p>Pagina 'Website' (7)</p>
+</li>
+<li>
+<p>Pagina 'Overig' (1-4, 13-17)</p>
+</li>
+</ul>
+
+</body>
+</html>
