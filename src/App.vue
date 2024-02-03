@@ -6,7 +6,7 @@ import ReloadPrompt from './ReloadPrompt.vue'
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+    <img alt="WKB logo" class="logo" src="/logo.svg" width="125" height="125" />
 
     <div class="wrapper">
       <AppHeader msg="Kegelen in Winterswijk" />
