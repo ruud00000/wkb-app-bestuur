@@ -1,6 +1,6 @@
 {
   "name": "wkb-app-bestuur",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "private": true,
   "author": "Ruud Naastepad",
   "scripts": {
@@ -10,10 +10,10 @@
     "dev": "vite",
     "preview": "vite preview",
     "test:e2e:dev": "start-server-and-test 'vite dev --port 4173' http://localhost:4173 'cypress open --e2e'",
-    "generate-pwa-assets": "pwa-assets-generator --preset ./pwa-assets.config.ts public/logo.svg"
-
+    "generate-pwa-assets": "pwa-assets-generator --preset ./pwa-assets.config.ts public/logo-blauw.svg"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.18.2",
     "express-fileupload": "^1.4.3",
     "register-service-worker": "^1.7.2",

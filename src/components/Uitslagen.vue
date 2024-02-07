@@ -1,118 +1,74 @@
 <template>
-  <h1>Uitslagen uploaden</h1>
-  <form enctype="multipart/form-data">
-      <input type="file" id="fileInput" name="file" ref="fileInput">
-      <label class="file-input" for="fileInput">Selecteer bestand</label>
-      <button type="button" @click="handleFileUpload">Upload bestand</button>
-  </form>
-  <br>
-  <h1>Excel bestand converteren</h1>
-  <form >
-      
-      <button type="button" onclick="handleFileConvert()">Converteer bestand</button>
-  </form>
-  <br>
-  <h1>Excel bestand uploaden en converteren</h1>
-  <form enctype="multipart/form-data">
-      <input type="file" id="fileInput" name="file" ref="fileInput">
-      <label class="file-input" for="fileInput">Selecteer bestand</label>
-      <button type="button" onclick="handleFileUploadConvert()">Upload en converteer bestand</button>
-  </form>
-  <br>
 
+  <Item>
+    <template #icon>
+      <UitslagenIcon />
+    </template>
+    <template #heading>Uitslagen upload</template>
+    <form enctype="multipart/form-data">
+      <input type="file" id="fileInputUploadConvert" name="file" ref="fileInputUploadConvert" @change="handleFileUploadConvert" style="display: none;" />
+    </form>
+  
+      Hier kan je de uitslagen uploaden: <a href="#" @click="handleUploadClick">upload Excel-bestand</a>. 
+      Laatste upload: {{ uploadDateTime }}
+  </Item>
+  
   <p>{{ message }}</p>
+
+  <div class="pwa-toast"></div>
 </template>
-
-
+  
 <script setup>
-import { ref } from 'vue';
+  import Item from './Item.vue'
+  import UitslagenIcon from './icons/IconUitslagen.vue'
+  import { ref } from 'vue'
 
-const fileInput = ref(null);
-const message = ref('');
+  const fileInputUploadConvert = ref(null)
+  const message = ref('')
+  const uploadDateTime = ref('')
+  
 
-const handleFileUpload = async () => {
-const formData = new FormData();
-formData.append('file', fileInput.value.files[0]);
-
-try {
-  const response = await fetch('https://fu2.computerhuys.nl/upload', {
-    method: 'POST',
-    body: formData,
-  });
-
-  if (!response.ok) {
-    throw new Error('File upload failed');
+  const handleUploadClick = () => {
+    // Trigger the click event of the hidden file input
+    fileInputUploadConvert.value.click()
   }
 
-  const data = await response.json();
+  const handleFileUploadConvert = async () => {
+    const formData = new FormData()
+    formData.append('file', fileInputUploadConvert.value.files[0])
 
-  // Update the message using the ref
-  message.value = data.message;
+    try {
+      const response = await fetch('https://fu2.computerhuys.nl//uploadconvert', {        
+        method: 'POST',
+        body: formData,
+      });
 
-  setTimeout(() => {
-    // Clear the message after 5 seconds
-    message.value = '';
-  }, 5000);
+      if (!response.ok) {
+        throw new Error('File upload and convert failed')
+      }
 
-} catch (error) {
-  console.error(error);
-}
-};
+      const data = await response.json()
 
-const handleFileConvert = async () => {
-const formData = new FormData();
-formData.append('file', fileInput.value.files[0]);
+      // Update the message using the ref
+      message.value = data.message
+      uploadDateTime.value = new Date().toLocaleString('nl-NL')
 
-try {
-  const response = await fetch('https://fu2.computerhuys.nl//convert', {
-    method: 'GET',
-  });
+      // pwa-toast maken met melding
 
-  if (!response.ok) {
-    throw new Error('File convert failed');
+
+      setTimeout(() => {
+        // Clear the message after 5 seconds
+        message.value = ''
+      }, 5000);
+
+    } catch (error) {
+      console.error(error)
+    }
   }
 
-  const data = await response.json();
-
-  // Update the message using the ref
-  message.value = data.message;
-
-  setTimeout(() => {
-    // Clear the message after 5 seconds
-    message.value = '';
-  }, 5000);
-
-} catch (error) {
-  console.error(error);
-}
-};
-
-const handleFileUploadConvert = async () => {
-const formData = new FormData();
-formData.append('file', fileInput.value.files[0]);
-
-try {
-  const response = await fetch('https://fu2.computerhuys.nl//uploadconvert', {
-    method: 'POST',
-    body: formData,
-  });
-
-  if (!response.ok) {
-    throw new Error('File upload and convert failed');
-  }
-
-  const data = await response.json();
-
-  // Update the message using the ref
-  message.value = data.message;
-
-  setTimeout(() => {
-    // Clear the message after 5 seconds
-    message.value = '';
-  }, 5000);
-
-} catch (error) {
-  console.error(error);
-}
-};
 </script>
+
+
+
+
+

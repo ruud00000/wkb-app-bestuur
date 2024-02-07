@@ -1,16 +1,23 @@
-import type { Preset } from '@vite-pwa/assets-generator/config';
- 
-export const minimal2023Preset: Preset = {
-  transparent: {
-    sizes: [64, 192, 512],
-    favicons: [[48, 'favicon.ico']]
-  },
-  maskable: {
-    sizes: [512]
-  },
-  apple: {
-    sizes: [180]
-  },
+import { defineConfig } from '@vite-pwa/assets-generator/config'
 
-  // Other configurations as needed
-};
+export default defineConfig({
+  /* remember to include the preset for favicons and apple touch icon */
+  headLinkOptions: {
+    preset: '2023'
+  },
+  preset: {
+    transparent: {
+      sizes: [64, 192, 512],
+      favicons: [[48, "favicon-48x48.ico"], [64, "favicon.ico"]],
+    },
+    maskable: {
+      sizes: [512],
+      resizeOptions: { background: '#6498d8' },
+    },
+    apple: {
+      sizes: [180],
+      resizeOptions: { background: '#6498d8' },
+    }
+  },
+  images: ['public/logo-blauw.svg'],
+})

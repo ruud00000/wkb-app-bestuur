@@ -11,7 +11,7 @@ defineProps({
   <div class="greetings">
     <h1 class="green">{{ msg }}</h1>
     <h3>
-      Welkom op de website van de Winterswijkse Kegelbond!
+      Welkom in de app voor het bestuur van de WKB!
     </h3>
   </div>
 </template>

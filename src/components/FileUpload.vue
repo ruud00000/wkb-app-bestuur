@@ -1,4 +1,3 @@
-<!-- Your Vue component template -->
 <template>
     <h1>Uitslagen uploaden</h1>
     <form enctype="multipart/form-data">
@@ -40,7 +39,7 @@ const handleFileUpload = async () => {
       message.value = '';
     }, 5000);
   } catch (error) {
-    console.error('Error:', error);
+    console.error(error);
   }
 };
 </script>

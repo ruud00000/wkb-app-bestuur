@@ -20,8 +20,8 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,png,svg,ico,pdf}'],
       },
       manifest: {
-        name: 'WKB App',
-        short_name: 'WKB',
+        name: 'WKB Bestuur',
+        short_name: 'WKB B',
         description: 'WKB app voor het bestuur',
         // theme_color: '#01bd7e', // groen
         theme_color: '#6498d8',  // blauw
