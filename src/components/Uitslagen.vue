@@ -15,7 +15,6 @@
   
   <p>{{ message }}</p>
 
-  <div class="pwa-toast"></div>
 </template>
   
 <script setup>
