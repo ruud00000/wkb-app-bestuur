@@ -3,6 +3,10 @@ import Item from './Item.vue'
 import WKBIcon from './icons/IconWKB.vue'
 import DevIcon from './icons/IconDev.vue'
 import Producteisen from '/src/assets/producteisen.pdf'
+import packageJson from '../../package.json'
+
+const version = packageJson.version
+
 </script>
 
 <template>
@@ -13,7 +17,7 @@ import Producteisen from '/src/assets/producteisen.pdf'
     </template>
     <template #heading>Over de WKB</template>
 
-    De Winterswijkse Kegelbond (WKB) is opgericht op 27 april 1981 (K.v.K 103042) · Aangesloten bij de Koninklijke Nederlandse Kegel Bond · Aangesloten bij NOC/NSF · Kegelbond gevestigd in Winterswijk.
+    De Winterswijkse Kegelbond (WKB) is opgericht op 27 april 1981 (K.v.K 103042) · Aangesloten bij de Koninklijke Nederlandse Kegel Bond · Aangesloten bij NOC/NSF · Gevestigd in Winterswijk.
   </Item>
 
   <Item>
@@ -23,7 +27,7 @@ import Producteisen from '/src/assets/producteisen.pdf'
     <template #heading>Over de site</template>
 
     Onder het motto 'het kan altijd beter' zijn er producteisen geformuleerd voor de website. Die kun je <a :href="Producteisen" target="_blank" rel="noopener">hier</a> vinden.
-    Dit is versie 1.0.1.
+    Dit is versie {{ version }}.
   </Item>
 
 </template>

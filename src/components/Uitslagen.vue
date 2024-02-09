@@ -10,10 +10,14 @@
     </form>
   
       Hier kan je de uitslagen uploaden: <a href="#" @click="handleUploadClick">upload Excel-bestand</a>. 
-      Laatste upload: {{ uploadDateTime }}
+      
   </Item>
   
-  <p>{{ message }}</p>
+  <!-- Toast component -->
+  <div v-if="showToast" class="pwa-toast">
+    <p>{{ toastMessage }}</p>    
+    <button class="toast-button" @click="hideToast">OK</button>
+  </div>
 
 </template>
   
@@ -21,11 +25,23 @@
   import Item from './Item.vue'
   import UitslagenIcon from './icons/IconUitslagen.vue'
   import { ref } from 'vue'
-
-  const fileInputUploadConvert = ref(null)
-  const message = ref('')
-  const uploadDateTime = ref('')
+  import { isValidFile } from '../../validator';
   
+  const fileInputUploadConvert = ref(null)
+  const toastMessage = ref('')
+  // Reactive state for controlling toast visibility
+  const showToast = ref(false)
+
+  // Method to show the toast
+  const showCustomToast = (text) => {
+    toastMessage.value = text
+    showToast.value = true
+  }
+
+  // Method to hide the toast
+  const hideToast = () => {
+    showToast.value = false
+  }
 
   const handleUploadClick = () => {
     // Trigger the click event of the hidden file input
@@ -33,6 +49,14 @@
   }
 
   const handleFileUploadConvert = async () => {
+    const validFile = isValidFile(fileInputUploadConvert.value.files[0])
+    if (!validFile) {
+      console.log("This is not the expected file")
+      showCustomToast("Bestand is niet geüpload. Controleer of je het juiste bestand hebt geselecteerd.")
+      return
+    }
+    
+    showCustomToast("Bezig met uploaden en converteren...")
     const formData = new FormData()
     formData.append('file', fileInputUploadConvert.value.files[0])
 
@@ -43,22 +67,15 @@
       });
 
       if (!response.ok) {
-        throw new Error('File upload and convert failed')
+        throw new Error('Bestand uploaden en converteren is niet gelukt.')
       }
 
       const data = await response.json()
 
-      // Update the message using the ref
-      message.value = data.message
-      uploadDateTime.value = new Date().toLocaleString('nl-NL')
-
-      // pwa-toast maken met melding
-
-
-      setTimeout(() => {
-        // Clear the message after 5 seconds
-        message.value = ''
-      }, 5000);
+      hideToast()
+      const uploadDate = new Date().toLocaleString('nl-NL')
+      const text = data.message + ' Laatste upload: ' + uploadDate
+      showCustomToast(text)
 
     } catch (error) {
       console.error(error)
@@ -67,7 +84,11 @@
 
 </script>
 
+<style scoped>
+.toast-button {
+  margin: auto;
+  display: block;
+}
+</style>
 
-
-
-
+../../isValidFile../../validator
