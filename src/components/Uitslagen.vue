@@ -27,7 +27,8 @@
     
   const fileInputUploadConvert = ref(null)
   const toastRef = ref(Toast);
-   
+  const API_URL = import.meta.env.VITE_API_URL
+
   const handleUploadClick = () => {
     // Trigger the click event of the hidden file input
     fileInputUploadConvert.value.click()
@@ -47,7 +48,7 @@
     formData.append('file', fileInputUploadConvert.value.files[0])
 
     try {
-      const response = await fetch('https://fu2.computerhuys.nl//uploadconvert', {        
+      const response = await fetch(`${API_URL}/uploadconvert`, {        
         method: 'POST',
         body: formData,
       });
