@@ -28,10 +28,39 @@
   const fileInputUploadConvert = ref(null)
   const toastRef = ref(Toast);
   const API_URL = import.meta.env.VITE_API_URL
+  const MAILTO = import.meta.env.VITE_MAILTO
+  const MAIL_URL = import.meta.env.VITE_MAIL_URL
+  const subject = 'WKB upload'
 
   const handleUploadClick = () => {
     // Trigger the click event of the hidden file input
     fileInputUploadConvert.value.click()
+  }
+
+  const sendMail = async (to, subject, mailtext) => {
+    const payload = {
+          to: to,
+          subject: subject,
+          text: mailtext
+    }
+    try {
+      const response = await fetch(`${MAIL_URL}/send-email`, {        
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      })
+      
+      if (!response.ok) {
+          throw new Error('Mail sturen is niet gelukt.')
+        }
+  
+      const data = await response.json()
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   const handleFileUploadConvert = async () => {
@@ -39,6 +68,8 @@
     if (!validFile) {
       console.log("This is not the expected file")
       toastRef.value.showCustomToast("Bestand is niet geüpload. Controleer of je het juiste bestand hebt geselecteerd.")
+      const mailText = `Bestand met naam ${fileInputUploadConvert.value.files[0].name} werd niet geupload.`
+      sendMail(MAILTO, subject, mailText)
       return
     }
     
@@ -54,7 +85,10 @@
       });
 
       if (!response.ok) {
+        const mailText = `Uploaden en converteren van bestand ${fileInputUploadConvert.value.files[0].name} is niet gelukt.`
+        sendMail(MAILTO, subject, mailText)
         throw new Error('Bestand uploaden en converteren is niet gelukt.')
+
       }
 
       const data = await response.json()
@@ -63,9 +97,14 @@
       const uploadDate = new Date().toLocaleString('nl-NL')
       const text = data.message + ' Laatste upload: ' + uploadDate
       toastRef.value.showCustomToast(text)
+      const mailText = `Bestand met naam ${fileInputUploadConvert.value.files[0].name} werd op ${uploadDate} geupload en geconverteerd.`
+      sendMail(MAILTO, subject, mailText)
 
     } catch (error) {
       console.error(error)
+      const mailText = `Fout bij uploaden en converteren van bestand ${fileInputUploadConvert.value.files[0].name}: ${error}.`
+      sendMail(MAILTO, subject, mailText)
+
     }
   }
 
