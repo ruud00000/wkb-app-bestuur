@@ -5,3 +5,4 @@ cypress/
 .vscode/
 cypres*
 public/
+.env*

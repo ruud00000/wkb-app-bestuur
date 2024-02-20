@@ -1,55 +1,13 @@
-# Opslaan in mongodb
+# WKB bestuur app
 
-Zie: https://medium.com/@mengthong/express-js-api-with-mongodb-course-outline-af22852ec9f7
+See VITE_README.md for Vite / Vue setup.
 
-# vue-app
+# Mongodb
 
-This template should help get you started developing with Vue 3 in Vite.
+See https://medium.com/@mengthong/express-js-api-with-mongodb-course-outline-af22852ec9f7 for mongodb setup course.
 
-## Recommended IDE Setup
+# Assets generator
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+See https://vite-pwa-org.netlify.app/assets-generator/ for generating assets.
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
-
-### Run End-to-End Tests with [Cypress](https://www.cypress.io/)
-
-```sh
-npm run test:e2e:dev
-```
-
-This runs the end-to-end tests against the Vite development server.
-It is much faster than the production build.
-
-But it's still recommended to test the production build with `test:e2e` before deploying (e.g. in CI environments):
-
-```sh
-npm run build
-npm run test:e2e
-```
+See  https://svgeditoronline.com/ for editing svg image.
