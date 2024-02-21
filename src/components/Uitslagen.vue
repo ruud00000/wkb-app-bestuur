@@ -7,14 +7,21 @@
     <template #heading>Uitslagen upload</template>
     <template></template>
       <form enctype="multipart/form-data">
-        <input type="file" id="fileInputUploadConvert" name="file" ref="fileInputUploadConvert" @change="handleFileUploadConvert" style="display: none;" />
+        <input 
+          type="file" 
+          id="fileInputUploadConvert" 
+          name="file" 
+          ref="fileInputUploadConvert" 
+          @change="handleFileUploadConvert" 
+          style="display: none ;" 
+          data-cy="fileInputUploadConvert" />
       </form>
     
-      Hier kan je de uitslagen uploaden: <a href="#" @click="handleUploadClick">upload Excel-bestand</a>. 
+      Hier kan je de uitslagen uploaden: <a href="#" @click="handleUploadClick"  data-cy="handleUploadClick">upload Excel-bestand </a>. 
     
   </Item>
   
-  <Toast ref="toastRef" />
+  <Toast ref="toastRef" data-cy="toastMessage"/>
 
 </template>
   
