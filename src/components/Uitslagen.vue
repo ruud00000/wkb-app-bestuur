@@ -5,7 +5,7 @@
       <UitslagenIcon />
     </template>
     <template #heading>Uitslagen upload</template>
-    <template></template>
+    <template #content>
       <form enctype="multipart/form-data">
         <input 
           type="file" 
@@ -16,28 +16,50 @@
           style="display: none ;" 
           data-cy="fileInputUploadConvert" />
       </form>
-    
-      Hier kan je de uitslagen uploaden: <a href="#" @click="handleUploadClick"  data-cy="handleUploadClick">upload Excel-bestand </a>. 
-    
+      Hier kan je de uitslagen uploaden: <a href="#" @click="handleUploadClick"  data-cy="handleUploadClick">upload Excel-bestand</a>. 
+    </template>
+  </Item>
+
+  <Item>
+    <template #icon>
+      <NieuwsIcon />
+    </template>
+    <template #heading>Nieuws upload</template>
+    <template #content>
+      Hier kan je de terecht om nieuws op de site te zetten: 
+      <RouterLink to="/nieuws">nieuws publiceren</RouterLink>
+    </template>
   </Item>
   
-  <Toast ref="toastRef" data-cy="toastMessage"/>
+  <Toast :message="toastMessage" :visible="toastVisible" @update:visible="updateToastVisibility" />
 
 </template>
   
 <script setup>
   import Item from './Item.vue'
   import UitslagenIcon from './icons/IconUitslagen.vue'
+  import NieuwsIcon from './icons/IconNieuwsItem.vue'
   import { ref } from 'vue'
   import { isValidFile } from '../../validator'
   import Toast from './Toast.vue'
     
   const fileInputUploadConvert = ref(null)
-  const toastRef = ref(Toast);
   const API_URL = import.meta.env.VITE_API_URL
   const MAILTO = import.meta.env.VITE_MAILTO
   const MAIL_URL = import.meta.env.VITE_MAIL_URL
   const subject = 'WKB upload'
+
+  const toastMessage = ref("")
+  const toastVisible = ref(false)
+
+  const showToast = (message) => {
+    toastMessage.value = message;
+    toastVisible.value = true;
+  }
+
+  const updateToastVisibility = (visible) => {
+    toastVisible.value = visible
+  }
 
   const handleUploadClick = () => {
     // Trigger the click event of the hidden file input
@@ -74,13 +96,13 @@
     const validFile = isValidFile(fileInputUploadConvert.value.files[0])
     if (!validFile) {
       console.log("This is not the expected file")
-      toastRef.value.showCustomToast("Bestand is niet geüpload. Controleer of je het juiste bestand hebt geselecteerd.")
+      showToast(("Bestand is niet geüpload. Controleer of je het juiste bestand hebt geselecteerd."))
       const mailText = `Bestand met naam ${fileInputUploadConvert.value.files[0].name} werd niet geupload.`
       sendMail(MAILTO, subject, mailText)
       return
     }
     
-    toastRef.value.showCustomToast("Bezig met uploaden en converteren...")
+    showToast("Bezig met uploaden en converteren...")
     
     const formData = new FormData()
     formData.append('file', fileInputUploadConvert.value.files[0])
@@ -100,10 +122,9 @@
 
       const data = await response.json()
 
-      //hideToast()
       const uploadDate = new Date().toLocaleString('nl-NL')
       const text = data.message + ' Laatste upload: ' + uploadDate
-      toastRef.value.showCustomToast(text)
+      showToast(text)
       const mailText = `Bestand met naam ${fileInputUploadConvert.value.files[0].name} werd op ${uploadDate} geupload en geconverteerd.`
       sendMail(MAILTO, subject, mailText)
 

@@ -1,29 +1,37 @@
 <!-- Toast.vue -->
 <template>
-    <div v-if="showToast" class="pwa-toast">
-      <p>{{ toastMessage }}</p>
-      <button class="toast-button" @click="hideToast">OK</button>
-    </div>
+  <div v-if="visible" class="pwa-toast">
+    <p v-html="message"></p>
+    <button class="toast-button" @click="hideToast">OK</button>
+  </div>
 </template>
 
 <script setup>
-  import { ref } from 'vue'
 
-  const showToast = ref(false);
-  const toastMessage = ref('');
-  
-  const showCustomToast = (text) => {
-    toastMessage.value = text;
-    showToast.value = true;
-  };
-  
-  const hideToast = () => {
-    showToast.value = false;
-  };
+import { defineProps, defineEmits } from 'vue'
 
-  defineExpose({
-    showCustomToast,
-    hideToast})
+const props = defineProps({
+  message: {
+    type: String,
+    required: true
+  },
+  visible: {
+    type: Boolean,
+    default: false
+  }
+})
+
+const emit = defineEmits(['update:visible'])
+
+const hideToast = () => {
+  // zorg dat als op button in deze component geklikt wordt 
+  // in parent event update:visible getriggerd wordt
+  // met waarde false voor parameter visible van functie updateToastVisibility in parent
+  // dit alles omdat direct (hier) wijzigen van prop niet is toegestaan in vue 
+  // 'Props are meant to be immutable from the perspective of the child component.' 
+  // https://chatgpt.com/share/68f21472-e389-4e09-9f71-d733f5855d60
+  emit('update:visible', false)
+}
 
 </script>
 
@@ -48,6 +56,15 @@
   .toast-button {
     margin: auto;
     display: block;
+  }
+
+  .pwa-toast {
+    bottom: unset;
+    background-color: white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    right: unset;
   }
 </style>
   

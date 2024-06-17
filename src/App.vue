@@ -12,7 +12,7 @@ import ReloadPrompt from './ReloadPrompt.vue'
       <AppHeader msg="Kegelen in Winterswijk" />
 
       <nav>
-        <RouterLink to="/">Uitslagen</RouterLink>
+        <RouterLink to="/">Upload</RouterLink>
         <RouterLink to="/informatie">Informatie</RouterLink>
       </nav>
     </div>
