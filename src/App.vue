@@ -25,6 +25,8 @@ import ReloadPrompt from './ReloadPrompt.vue'
 header {
   line-height: 1.5;
   max-height: 100vh;
+  margin-bottom: 3em;
+  padding: 2rem 2rem 0;
 }
 
 .logo {
