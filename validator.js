@@ -21,7 +21,7 @@ export const isValidImage = (file) => {
 
   let message = ''
   if (!isValidExtension || !isValidSize) {
-    message += 'Bestand is niet geüpload: '
+    message += `Bestand met naam ${file.name} is niet geüpload: `
   }
   if (!isValidExtension) {
     message += '<br>- ' + 'Bestandstype is niet toegestaan'

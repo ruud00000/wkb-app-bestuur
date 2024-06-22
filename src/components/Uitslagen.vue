@@ -42,11 +42,12 @@
   import { ref } from 'vue'
   import { isValidFile } from '../../validator'
   import Toast from './Toast.vue'
+  import { sendMail } from '@/utils/mailService'
     
   const fileInputUploadConvert = ref(null)
-  const API_URL = import.meta.env.VITE_API_URL
+  const FILEUPLOAD_URL = import.meta.env.VITE_FILEUPLOAD_URL
   const MAILTO = import.meta.env.VITE_MAILTO
-  const MAIL_URL = import.meta.env.VITE_MAIL_URL
+  
   const subject = 'WKB upload'
 
   const toastMessage = ref("")
@@ -66,32 +67,6 @@
     fileInputUploadConvert.value.click()
   }
 
-  const sendMail = async (to, subject, mailtext) => {
-    const payload = {
-          to: to,
-          subject: subject,
-          text: mailtext
-    }
-    try {
-      const response = await fetch(`${MAIL_URL}/send-email`, {        
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(payload)
-      })
-      
-      if (!response.ok) {
-          throw new Error('Mail sturen is niet gelukt.')
-        }
-  
-      const data = await response.json()
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
   const handleFileUploadConvert = async () => {
     const validFile = isValidFile(fileInputUploadConvert.value.files[0])
     if (!validFile) {
@@ -108,7 +83,7 @@
     formData.append('file', fileInputUploadConvert.value.files[0])
 
     try {
-      const response = await fetch(`${API_URL}/uploadconvert`, {        
+      const response = await fetch(`${FILEUPLOAD_URL}/uploadconvert`, {        
         method: 'POST',
         body: formData,
       });

@@ -3,11 +3,15 @@ import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import Toast from './Toast.vue'
 import { isValidImage } from '../../validator'
+import { sendMail } from '@/utils/mailService'
 
 const objects = ref([])
 const selectedObjectId = ref(null)
 const selectedObject = ref(null)
 const API_URL = import.meta.env.VITE_API_URL
+const MAILTO = import.meta.env.VITE_MAILTO
+
+const subject = 'WKB nieuws upload'
   
 const editMode = ref(false)
 const cancelEnabled = ref(false)
@@ -93,7 +97,7 @@ const selectObject = () => {
   cancelEnabled.value = true
 }
 
-const handleFileUpload = () => {
+const handleFileUpload = async () => {
   const file = fileInput.value.files[0]
 
   if (file) {
@@ -102,8 +106,9 @@ const handleFileUpload = () => {
     if (message) {
       console.log(message)
       showToast(message)
-      // const mailText = `Bestand met naam ${file.name} werd niet geupload.`
-      // sendMail(MAILTO, subject, mailText)
+      const mailText = message
+      const data = await sendMail(MAILTO, subject, mailText)
+      console.log()
       return
     } 
     // console.log('Selected file:', file)    
@@ -116,8 +121,12 @@ const handleFileUpload = () => {
         }
       })
       .then(response => {
+        const uploadDate = new Date().toLocaleString('nl-NL')
         console.log(response.data.message)
         showToast(response.data.message)
+      
+        const mailText = `Bestand met naam ${file.name} werd op ${uploadDate} geupload.`
+        sendMail(MAILTO, subject, mailText, file)
       })
       .catch(error => {
       console.error(error); 
