@@ -3,11 +3,13 @@ import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import Toast from './Toast.vue'
 import { isValidImage } from '../../validator'
-import { sendMail } from '@/utils/mailService'
+//import { sendMail } from '@/utils/mailService'
+import { sendMail } from 'wkb-utils'
 
 const objects = ref([])
 const selectedObjectId = ref(null)
 const selectedObject = ref(null)
+
 const API_URL = import.meta.env.VITE_API_URL
 const MAILTO = import.meta.env.VITE_MAILTO
 

@@ -42,7 +42,7 @@
   import { ref } from 'vue'
   import { isValidFile } from '../../validator'
   import Toast from './Toast.vue'
-  import { sendMail } from '@/utils/mailService'
+  import { sendMail } from 'wkb-utils'
     
   const fileInputUploadConvert = ref(null)
   const FILEUPLOAD_URL = import.meta.env.VITE_FILEUPLOAD_URL
@@ -80,7 +80,8 @@
     showToast("Bezig met uploaden en converteren...")
     
     const formData = new FormData()
-    formData.append('file', fileInputUploadConvert.value.files[0])
+    const file = fileInputUploadConvert.value.files[0]
+    formData.append('file', file)
 
     try {
       const response = await fetch(`${FILEUPLOAD_URL}/uploadconvert`, {        
@@ -89,7 +90,7 @@
       });
 
       if (!response.ok) {
-        const mailText = `Uploaden en converteren van bestand ${fileInputUploadConvert.value.files[0].name} is niet gelukt.`
+        const mailText = `Uploaden en converteren van bestand ${file.name} is niet gelukt.`
         sendMail(MAILTO, subject, mailText)
         throw new Error('Bestand uploaden en converteren is niet gelukt.')
 
@@ -100,12 +101,12 @@
       const uploadDate = new Date().toLocaleString('nl-NL')
       const text = data.message + ' Laatste upload: ' + uploadDate
       showToast(text)
-      const mailText = `Bestand met naam ${fileInputUploadConvert.value.files[0].name} werd op ${uploadDate} geupload en geconverteerd.`
-      sendMail(MAILTO, subject, mailText)
+      const mailText = `Bestand met naam ${file.name} werd op ${uploadDate} geupload en geconverteerd.`
+      sendMail(MAILTO, subject, mailText, file)
 
     } catch (error) {
       console.error(error)
-      const mailText = `Fout bij uploaden en converteren van bestand ${fileInputUploadConvert.value.files[0].name}: ${error}.`
+      const mailText = `Fout bij uploaden en converteren van bestand ${file.name}: ${error}.`
       sendMail(MAILTO, subject, mailText)
 
     }
