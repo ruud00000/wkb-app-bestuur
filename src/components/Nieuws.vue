@@ -110,14 +110,13 @@ const handleFileUpload = async () => {
       showToast(message)
       const mailText = message
       const data = await sendMail(MAILTO, subject, mailText)
-      console.log()
       return
     } 
     // console.log('Selected file:', file)    
     const formData = new FormData()
     formData.append('file', file)
     // console.log('form met file: ', formData.get('file'))
-    axios.post(`${API_URL}/upload`, formData, {
+    await axios.post(`${API_URL}/upload`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
         }
@@ -160,11 +159,12 @@ const cancelEdit = () => {
   editMode.value = false
 }
 
-const deleteDocument = () => {
-  axios.post(`${API_URL}/delete-nieuws`, form.value)
+const deleteDocument = async () => {
+  await axios.post(`${API_URL}/delete-nieuws`, form.value)
       .then(response => {
         console.log(response.data.info)
         showToast(response.data.info)
+        sendMail(MAILTO, 'WKB nieuws delete', JSON.stringify(response.data))
         // objects bijwerken 
         objects.value = response.data.collection 
       })
@@ -175,7 +175,7 @@ const deleteDocument = () => {
  
 }
 
-const submitForm = (event) => {
+const submitForm = async (event) => {
   const formNode = event.target;  
 
   if (!formNode.checkValidity()) {
@@ -185,10 +185,11 @@ const submitForm = (event) => {
     formNode.classList.add('was-validated')      
   } else {
     // Handle update / add logic
-    axios.post(`${API_URL}/update-nieuws`, form.value)
+    await axios.post(`${API_URL}/update-nieuws`, form.value)
       .then(response => {
         console.log(response.data.info)
         showToast(response.data.info)
+        sendMail(MAILTO, 'WKB nieuws update', JSON.stringify(response.data))
         // objects bijwerken incl. door mongodb gegenereerde _id
         objects.value = response.data.collection 
       })
