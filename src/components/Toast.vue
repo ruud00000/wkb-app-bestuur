@@ -1,7 +1,7 @@
 <!-- Toast.vue -->
 <template>
   <div v-if="visible" class="pwa-toast">
-    <p v-html="message"></p>
+    <p v-html="message" data-cy="toastMessage"></p>
     <button class="toast-button" @click="hideToast">OK</button>
   </div>
 </template>

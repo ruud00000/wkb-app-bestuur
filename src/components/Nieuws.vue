@@ -59,26 +59,30 @@ const triggerFileInput = () => {
 };
 
 onMounted(async () => {
-  const response = await axios.get(`${API_URL}/get-nieuws`)
-  objects.value = response.data;
-  // let op dit levert array van objecten op in de vorm 
-  // {"_id":"666c375cfdd9511c09d060a8","datum":"1-5-2024","titel_kort":"test titel kort","titel_lang":"test titel lang","inhoud_kort":"test inhoud kort","inhoud_lang":"test inhoud lang\n","id":{"$numberInt":"2"},"foto_naam":"","visibility":"public"} 
-  // i.p.v. (verzonden door get-nieuws endpoint):
-  // {"_id":{"$oid":"666c375cfdd9511c09d060a8"},"datum":"1-5-2024","titel_kort":"test titel kort","titel_lang":"test titel lang","inhoud_kort":"test inhoud kort","inhoud_lang":"test inhoud lang\n","id":{"$numberInt":"2"},"foto_naam":"","visibility":"public"}
-  // dus niet .$oid gebruiken 
-  // (zie https://chatgpt.com/share/a44cba60-47d9-4911-87dc-78b59db14f61 voor uitleg over $oid)
-  console.log('received response.data from get-nieuws: ', response.data)
+  try {
+    const response = await axios.get(`${API_URL}/get-nieuws`)
+    objects.value = response.data;
+    // let op dit levert array van objecten op in de vorm 
+    // {"_id":"666c375cfdd9511c09d060a8","datum":"1-5-2024","titel_kort":"test titel kort","titel_lang":"test titel lang","inhoud_kort":"test inhoud kort","inhoud_lang":"test inhoud lang\n","id":{"$numberInt":"2"},"foto_naam":"","visibility":"public"} 
+    // i.p.v. (verzonden door get-nieuws endpoint):
+    // {"_id":{"$oid":"666c375cfdd9511c09d060a8"},"datum":"1-5-2024","titel_kort":"test titel kort","titel_lang":"test titel lang","inhoud_kort":"test inhoud kort","inhoud_lang":"test inhoud lang\n","id":{"$numberInt":"2"},"foto_naam":"","visibility":"public"}
+    // dus niet .$oid gebruiken 
+    // (zie https://chatgpt.com/share/a44cba60-47d9-4911-87dc-78b59db14f61 voor uitleg over $oid)
+    console.log('received response.data from get-nieuws: ', response.data)
 
-  // Annuleren knop in beeld zetten asl er iets getypt wordt
-  const inputNodes = document.querySelectorAll('input')
-  console.log('inputNodes: ', inputNodes)
+    // Annuleren knop in beeld zetten asl er iets getypt wordt
+    const inputNodes = document.querySelectorAll('input')
+    console.log('inputNodes: ', inputNodes)
 
-  // Loop over them and enable cancel
-  Array.from(inputNodes).forEach(inputNode => {
-    inputNode.addEventListener('input', event => {
-      cancelEnabled.value = true
-    }, false)
-  })
+    // Loop over them and enable cancel
+    Array.from(inputNodes).forEach(inputNode => {
+      inputNode.addEventListener('input', event => {
+        cancelEnabled.value = true
+      }, false)
+    })
+  } catch (error) {
+    console.error('Error fetching nieuws items:', error);
+  }
   
 });
 
@@ -201,7 +205,7 @@ const submitForm = async (event) => {
 }
 </script>
 
-<template>  
+<template #content>  
   <div class="card">
     <div class="card-header">
       <label for="nieuws_item" class="form-label">Nieuws item</label>
@@ -225,7 +229,7 @@ const submitForm = async (event) => {
         <div class="form-group mb-3">
           <label for="titel_kort" class="form-label">Titel</label>
           <input type="text" id="titel_kort" v-model="form.titel_kort" class="form-control" required/>
-          <div class="invalid-feedback">
+          <div id="titel_kort_feedback" class="invalid-feedback">
             Dit veld is verplicht.
           </div>
           <div class="form-text">
@@ -236,7 +240,7 @@ const submitForm = async (event) => {
         <div class="form-group mb-3">
           <label for="inhoud_lang" class="form-label">Berichttekst</label>
           <textarea id="inhoud_lang" v-model="form.inhoud_lang" rows="10" class="form-control" required></textarea>
-          <div class="invalid-feedback">
+          <div id="inhoud_lang_feedback" class="invalid-feedback">
             Dit veld is verplicht.
           </div>
           <div class="form-text">

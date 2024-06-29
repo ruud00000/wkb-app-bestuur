@@ -27,7 +27,7 @@ const version = packageJson.version
     </template>
     <template #heading>Over de site</template>
     <template #content>
-      Onder het motto 'het kan altijd beter' zijn er producteisen geformuleerd voor de website. Die kun je <a :href="Producteisen" target="_blank" rel="noopener">hier</a> vinden.
+      Onder het motto 'het kan altijd beter' zijn er producteisen geformuleerd voor de website. Die kun je <a id="producteisen" :href="Producteisen" target="_blank" rel="noopener">hier</a> vinden.
       Dit is versie {{ version }}.
     </template>
   </Item>
