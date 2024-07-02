@@ -2,8 +2,7 @@
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import Toast from './Toast.vue'
-import { isValidImage } from '../../validator'
-//import { sendMail } from '@/utils/mailService'
+import { isInvalidImage } from '../../validator'
 import { sendMail } from 'wkb-utils'
 
 const objects = ref([])
@@ -14,10 +13,13 @@ const API_URL = import.meta.env.VITE_API_URL
 const MAILTO = import.meta.env.VITE_MAILTO
 
 const subject = 'WKB nieuws upload'
+const uploadDate = ref(new Date().toLocaleString('nl-NL'))
+const mailText = ref("")
   
 const editMode = ref(false)
 const cancelEnabled = ref(false)
 
+const message = ref("")
 const toastMessage = ref("")
 const toastVisible = ref(false)
 
@@ -61,6 +63,7 @@ const triggerFileInput = () => {
 onMounted(async () => {
   try {
     const response = await axios.get(`${API_URL}/get-nieuws`)
+    //console.log('axios response: ', response)
     objects.value = response.data;
     // let op dit levert array van objecten op in de vorm 
     // {"_id":"666c375cfdd9511c09d060a8","datum":"1-5-2024","titel_kort":"test titel kort","titel_lang":"test titel lang","inhoud_kort":"test inhoud kort","inhoud_lang":"test inhoud lang\n","id":{"$numberInt":"2"},"foto_naam":"","visibility":"public"} 
@@ -68,7 +71,7 @@ onMounted(async () => {
     // {"_id":{"$oid":"666c375cfdd9511c09d060a8"},"datum":"1-5-2024","titel_kort":"test titel kort","titel_lang":"test titel lang","inhoud_kort":"test inhoud kort","inhoud_lang":"test inhoud lang\n","id":{"$numberInt":"2"},"foto_naam":"","visibility":"public"}
     // dus niet .$oid gebruiken 
     // (zie https://chatgpt.com/share/a44cba60-47d9-4911-87dc-78b59db14f61 voor uitleg over $oid)
-    console.log('received response.data from get-nieuws: ', response.data)
+    //console.log('received response.data from get-nieuws: ', response.data)
 
     // Annuleren knop in beeld zetten asl er iets getypt wordt
     const inputNodes = document.querySelectorAll('input')
@@ -81,7 +84,7 @@ onMounted(async () => {
       }, false)
     })
   } catch (error) {
-    console.error('Error fetching nieuws items:', error);
+    //console.error('Error fetching nieuws items:', error);
   }
   
 });
@@ -108,36 +111,47 @@ const handleFileUpload = async () => {
 
   if (file) {
     // validatie
-    const message = isValidImage(file)    
-    if (message) {
-      console.log(message)
-      showToast(message)
-      const mailText = message
-      const data = await sendMail(MAILTO, subject, mailText)
+    message.value = isInvalidImage(file)    
+    if (message.value) {
+      console.log(message.value)
+      showToast(message.value)
+      mailText.value = message.value
+      try {
+        await sendMail(MAILTO, subject, mailText.value)
+      } catch (error) {
+        console.error('Error sending mail:', error);
+      }
       return
     } 
     // console.log('Selected file:', file)    
     const formData = new FormData()
     formData.append('file', file)
     // console.log('form met file: ', formData.get('file'))
-    await axios.post(`${API_URL}/upload`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
+    try {
+      const response = await axios.post(`${API_URL}/upload`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
         }
       })
-      .then(response => {
-        const uploadDate = new Date().toLocaleString('nl-NL')
-        console.log(response.data.message)
-        showToast(response.data.message)
       
-        const mailText = `Bestand met naam ${file.name} werd op ${uploadDate} geupload.`
-        sendMail(MAILTO, subject, mailText, file)
-      })
-      .catch(error => {
-      console.error(error); 
-      })
-    // naam in form object zetten (kan niet met v-model voor input van type file)
-    form.value.foto_naam = formData.get('file').name
+      //const uploadDate = new Date().toLocaleString('nl-NL')
+      message.value = response.data.message
+      console.log('message: ', message.value)
+      showToast(message.value)
+    
+      mailText.value = `Bestand met naam ${file.name} werd op ${uploadDate.value} geupload.`
+      try {
+        await sendMail(MAILTO, subject, mailText.value, file)
+      } catch (error) {
+        console.error('Error sending mail:', error);
+      }
+
+      // naam in form object zetten (kan niet met v-model voor input van type file)
+      form.value.foto_naam = formData.get('file').name
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      showToast('Error uploading file.');
+    }
   }
 }
 
@@ -151,31 +165,56 @@ const resetForm = (event) => {
     foto_naam: '',
     visibility: true
   };
-  const formNode = document.querySelector('.needs-validation')
-  formNode.classList.remove('was-validated')
-  cancelEnabled.value = false
+  try {
+    const formNode = document.querySelector('.needs-validation')
+    formNode.classList.remove('was-validated')
+    cancelEnabled.value = false
+  } catch (error) {
+    console.error('Error removing class was-validated after validation:', error);
+  }
 }
 
 const cancelEdit = () => {
-  resetForm()
-  selectedObject.value = null
-  selectedObjectId.value = null
-  editMode.value = false
+  try {
+    resetForm()
+    selectedObject.value = null
+    selectedObjectId.value = null
+    editMode.value = false
+  } catch (error) {
+    console.error('Error resetting form:', error);
+  }
 }
 
 const deleteDocument = async () => {
-  await axios.post(`${API_URL}/delete-nieuws`, form.value)
-      .then(response => {
-        console.log(response.data.info)
-        showToast(response.data.info)
-        sendMail(MAILTO, 'WKB nieuws delete', JSON.stringify(response.data))
-        // objects bijwerken 
-        objects.value = response.data.collection 
-      })
-  resetForm()
-  selectedObject.value = null
-  selectedObjectId.value = null
-  editMode.value = false
+  try {
+    const response = await axios.post(`${API_URL}/delete-nieuws`, form.value)
+
+    try {      
+      console.log(response.data.info)
+      showToast(response.data.info)
+
+      try {
+        mailText.value = JSON.stringify(response.data)
+        await sendMail(MAILTO, 'WKB nieuws delete', mailText.value)
+      } catch (mailError) {
+        console.error('Error sending mail:', mailError);
+      }
+
+      // objects bijwerken 
+      objects.value = response.data.collection 
+    
+      resetForm()
+      selectedObject.value = null
+      selectedObjectId.value = null
+      editMode.value = false
+    } catch (updateError) {
+      console.error('Error updating objects or resetting form:', updateError);
+    }
+
+  } catch (error) {
+    console.error('Error deleting document:', error);
+    showToast('Er is iets misgegaan bij het verwijderen van het nieuwsitem.');
+  }
  
 }
 
@@ -188,19 +227,34 @@ const submitForm = async (event) => {
     cancelEnabled.value = true
     formNode.classList.add('was-validated')      
   } else {
-    // Handle update / add logic
-    await axios.post(`${API_URL}/update-nieuws`, form.value)
-      .then(response => {
+    try {
+      // Handle update / add logic
+      const response = await axios.post(`${API_URL}/update-nieuws`, form.value) 
+
+      try {
         console.log(response.data.info)
         showToast(response.data.info)
-        sendMail(MAILTO, 'WKB nieuws update', JSON.stringify(response.data))
+        try {
+          mailText.value = JSON.stringify(response.data)
+          await sendMail(MAILTO, 'WKB nieuws update', mailText.value)
+        } catch (mailError) {
+          console.error('Error sending mail:', mailError);
+        }
         // objects bijwerken incl. door mongodb gegenereerde _id
         objects.value = response.data.collection 
-      })
-    resetForm()
-    selectedObject.value = null
-    selectedObjectId.value = null
-    editMode.value = false
+
+        resetForm()
+        selectedObject.value = null
+        selectedObjectId.value = null
+        editMode.value = false
+      } catch (updateError) {
+        console.error('Error updating objects or resetting form:', updateError);
+      }
+
+    } catch (error) {
+      console.error("An error occurred during form submission:", error);
+      showToast("Er is iets misgegaan bij het updaten.");
+    }
   }
 }
 </script>

@@ -5,7 +5,7 @@ export const isValidFile = (file) => {
   return file.name.includes('Competitie') && file.name.includes(year) && file.name.includes('ronde') && file.name.includes('.xlsx');
 }
 
-export const isValidImage = (file) => {
+export const isInvalidImage = (file) => {
   // check bestandsextensie
   const validExtensions = ['jpg', 'jpeg', 'png'];
   const fileExtension = file.name.split('.').pop().toLowerCase();
